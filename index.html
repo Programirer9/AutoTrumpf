@@ -3,25 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Auto-Trumpf — Polished</title>
+  <title>Auto-Trumpf — Garage, Coins & Upgrades (Erweitert)</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="container" role="main">
     <header>
       <h1>Auto-Trumpf</h1>
-      <p class="subtitle">Wähle eine Kategorie — besiege den Computer!</p>
+      <p class="subtitle">Verdiene Coins, verbessere Karten in der Garage — jetzt mit Bestätigung, Bundles, Limits, Animationen & Sounds.</p>
     </header>
 
-    <section id="controls-top" class="controls-top">
-      <div class="left">
+    <section class="top-row">
+      <div class="left-controls">
         <button id="next-round" class="btn">Neues Spiel</button>
         <button id="auto-play" class="btn secondary">Auto: Aus</button>
-        <button id="toggle-sound" class="btn secondary">Sound: An</button>
       </div>
-      <div class="right stats-inline">
-        <div id="games-played">Gespielt: 0</div>
-        <div id="best-time">Beste Zeit: —</div>
+
+      <div class="coins-panel">
+        <div class="coins">Coins: <span id="coin-count">0</span></div>
+        <button id="open-garage" class="btn secondary">Garage</button>
       </div>
     </section>
 
@@ -63,8 +63,9 @@
       <h3>So wird gespielt</h3>
       <ol>
         <li>Neues Spiel starten — Karten werden gemischt und verteilt.</li>
-        <li>Du siehst deine Karte. Wähle eine Kategorie (Top-Speed, PS, 0–100, Gewicht, Preis).</li>
-        <li>Computer zeigt seine Karte. Bessere Zahl gewinnt. Sieger nimmt beide Karten.</li>
+        <li>Wähle eine Kategorie (Top-Speed, PS, 0–100, Gewicht, Preis).</li>
+        <li>Gewinner erhält beide Karten und Coins (pro Runde + Spielgewinn).</li>
+        <li>In der Garage kannst du Karten dauerhaft verbessern — Käufe müssen bestätigt werden.</li>
       </ol>
     </section>
 
@@ -72,6 +73,39 @@
       <small>Hoste dieses Verzeichnis als GitHub Pages (Branch <code>main</code> oder <code>gh-pages</code>).</small>
     </footer>
   </main>
+
+  <!-- Garage Panel -->
+  <aside id="garage-panel" class="garage-panel hidden" aria-hidden="true">
+    <div class="garage-header">
+      <h3>Garage</h3>
+      <div class="garage-coins">Deine Coins: <strong id="garage-coin-count">0</strong></div>
+      <button id="close-garage" class="btn secondary">Schließen</button>
+    </div>
+
+    <div id="garage-content" class="garage-content">
+      <p class="muted">Wähle eine Karte und kaufe einzelne Upgrades oder das komplette Bundle (+1 Level auf alle Stats) mit Rabatt.</p>
+      <div id="garage-cards" class="garage-cards"></div>
+    </div>
+
+    <div class="garage-footer">
+      <small>Upgrades sind permanent (im Browser gespeichert).</small>
+    </div>
+  </aside>
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="modal hidden" role="dialog" aria-hidden="true" aria-modal="true">
+    <div class="modal-inner">
+      <h4 id="confirm-title">Bestätigen</h4>
+      <div id="confirm-body" class="confirm-body"></div>
+      <div class="confirm-actions">
+        <button id="confirm-cancel" class="btn secondary">Abbrechen</button>
+        <button id="confirm-ok" class="btn">Kaufen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
 
   <script src="script.js"></script>
 </body>
