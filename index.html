@@ -3,60 +3,75 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Auto-Trumpf</title>
+  <title>Auto-Trumpf — Polished</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="container">
+  <main class="container" role="main">
     <header>
       <h1>Auto-Trumpf</h1>
       <p class="subtitle">Wähle eine Kategorie — besiege den Computer!</p>
     </header>
 
-    <section id="game">
+    <section id="controls-top" class="controls-top">
+      <div class="left">
+        <button id="next-round" class="btn">Neues Spiel</button>
+        <button id="auto-play" class="btn secondary">Auto: Aus</button>
+        <button id="toggle-sound" class="btn secondary">Sound: An</button>
+      </div>
+      <div class="right stats-inline">
+        <div id="games-played">Gespielt: 0</div>
+        <div id="best-time">Beste Zeit: —</div>
+      </div>
+    </section>
+
+    <section id="game" aria-live="polite">
       <div class="status">
-        <div id="player-count">Du: 0 Karten</div>
-        <div id="round-message">Bereit?</div>
-        <div id="computer-count">Computer: 0 Karten</div>
+        <div class="player-info">
+          <div id="player-count">Du: 0</div>
+          <progress id="player-progress" value="0" max="40"></progress>
+        </div>
+
+        <div id="round-message" class="round-message">Bereit?</div>
+
+        <div class="player-info">
+          <div id="computer-count">Computer: 0</div>
+          <progress id="computer-progress" value="0" max="40"></progress>
+        </div>
       </div>
 
       <div class="boards">
-        <div class="board" id="player-board">
+        <div class="board" id="player-board" aria-label="Deine Karte">
           <h2>Deine Karte</h2>
-          <div id="player-card" class="card empty">Keine Karte</div>
+          <div id="player-card" class="card empty" role="article">Keine Karte</div>
         </div>
 
-        <div class="board" id="computer-board">
+        <div class="board" id="computer-board" aria-label="Computer Karte">
           <h2>Computer</h2>
-          <div id="computer-card" class="card back">Verdeckt</div>
+          <div id="computer-card" class="card back" role="article">Verdeckt</div>
         </div>
       </div>
 
-      <div id="controls" class="controls">
-        <button id="next-round" class="btn">Neues Spiel</button>
+      <div id="stat-controls" class="stat-controls">
+        <div id="stat-buttons" class="stat-buttons"></div>
       </div>
 
-      <div id="log" class="log"></div>
+      <div id="log" class="log" aria-live="polite"></div>
     </section>
 
     <section id="howto" class="howto">
       <h3>So wird gespielt</h3>
       <ol>
-        <li>Klicke <strong>Neues Spiel</strong> — Karten werden gemischt und verteilt.</li>
-        <li>Du siehst deine Karte. Wähle eine Kategorie (z. B. Top-Speed).</li>
-        <li>Computer zeigt seine Karte. Bessere Zahl gewinnt die Runde.</li>
-        <li>Gewinner nimmt beide Karten ans Ende seines Stapels. Spiel bis einer alle Karten hat.</li>
+        <li>Neues Spiel starten — Karten werden gemischt und verteilt.</li>
+        <li>Du siehst deine Karte. Wähle eine Kategorie (Top-Speed, PS, 0–100, Gewicht, Preis).</li>
+        <li>Computer zeigt seine Karte. Bessere Zahl gewinnt. Sieger nimmt beide Karten.</li>
       </ol>
     </section>
 
     <footer>
-      <small>Hoste dieses Verzeichnis als GitHub Pages (branch <code>main</code> oder <code>gh-pages</code>)</small>
+      <small>Hoste dieses Verzeichnis als GitHub Pages (Branch <code>main</code> oder <code>gh-pages</code>).</small>
     </footer>
   </main>
-
-  <template id="stat-btn-template">
-    <button class="stat-btn btn"></button>
-  </template>
 
   <script src="script.js"></script>
 </body>
