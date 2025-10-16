@@ -1,11 +1,13 @@
 :root{
   --bg: #071427;
-  --panel: rgba(255,255,255,0.02);
-  --accent: #1fa2ff;
-  --muted: #c0d6ea;
   --card-bg: #ffffff;
+  --accent: #1fa2ff;
+  --accent-2: #45d67f;
+  --muted: #c0d6ea;
+  --danger: #ff5768;
+  --win: #e6ffef;
+  --lose: #fff0f0;
 }
-
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -16,60 +18,62 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:18px;
 }
-
 .container{
   width:100%;
-  max-width:1080px;
+  max-width:1120px;
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border-radius:12px;
-  padding:20px;
-  box-shadow: 0 8px 30px rgba(2,6,23,0.8);
+  padding:18px;
+  box-shadow: 0 10px 40px rgba(2,6,23,0.8);
 }
-
-header{ text-align:center; margin-bottom:14px }
-h1{ margin:0; font-size:28px }
+header{ text-align:center; margin-bottom:10px }
+h1{ margin:0; font-size:30px }
 .subtitle{ margin:4px 0 0; color:var(--muted) }
 
-.status{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:center;
-  margin-bottom:12px;
-}
-.status div{ background: var(--panel); padding:8px 10px; border-radius:8px; font-size:14px; color:var(--muted) }
+.controls-top{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px }
+.controls-top .left{ display:flex; gap:8px }
+.btn{ background:var(--accent); border:none; color:white; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:700 }
+.btn.secondary{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); font-weight:600 }
 
-.boards{
-  display:flex;
-  gap:16px;
-  justify-content:space-between;
-  flex-wrap:wrap;
-}
-.board{
-  flex:1 1 45%;
-  min-width:280px;
-}
+.status{ display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:12px; }
+.player-info{ display:flex; flex-direction:column; gap:6px; width:28% }
+.player-info div{ color:var(--muted) }
+progress{ width:100%; height:10px; border-radius:8px; overflow:hidden; appearance:none }
+progress::-webkit-progress-bar{ background:rgba(255,255,255,0.04) }
+progress::-webkit-progress-value{ background:linear-gradient(90deg,var(--accent), #0ad0b0) }
+
+.round-message{ text-align:center; flex:1; color:var(--muted); font-weight:600 }
+
+.boards{ display:flex; gap:20px; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px }
+.board{ flex:1 1 45%; min-width:280px }
 .board h2{ margin:0 0 8px; font-size:16px; color:var(--muted) }
 
 .card{
   background:var(--card-bg);
-  color:#0b1220;
-  border-radius:10px;
+  color:#071427;
+  border-radius:12px;
   padding:0;
-  min-height:300px;
+  min-height:340px;
   display:flex;
   flex-direction:column;
-  gap:8px;
-  box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+  gap:0;
+  box-shadow: 0 8px 20px rgba(2,6,23,0.45);
   overflow:hidden;
+  transform-style:preserve-3d;
+  transition: transform 400ms ease;
 }
 
-/* Bildbereich */
+/* Flip container (we emulate flip by adding .flipped class) */
+.card.flip {
+  transform: rotateY(180deg);
+}
+
+/* Media */
 .card .card-media{
   width:100%;
-  height:170px;
+  height:190px;
   display:block;
   background: linear-gradient(90deg,#f1f5f9,#e2e8f0);
   position:relative;
@@ -80,53 +84,37 @@ h1{ margin:0; font-size:28px }
   height:100%;
   object-fit:cover;
   display:block;
+  transition: transform 400ms ease;
 }
+.card:hover .card-media img{ transform: scale(1.03) }
 
-/* Inhalt */
-.card .card-body{
-  padding:14px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.card .title{ font-weight:700; font-size:18px; margin-bottom:4px; color:#071427 }
-.stats{ display:flex; flex-direction:column; gap:6px }
-.stat{ display:flex; justify-content:space-between; padding:8px; border-radius:6px; background:rgba(0,0,0,0.03); color:#071427; font-weight:600; }
+/* Body */
+.card .card-body{ padding:14px; display:flex; flex-direction:column; gap:10px }
+.card .title{ font-weight:800; font-size:18px; margin-bottom:4px; color:#071427 }
+.stats{ display:flex; flex-direction:column; gap:8px }
+.stat{ display:flex; justify-content:space-between; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03); color:#071427; font-weight:700; transition: background 250ms, transform 250ms }
+.stat.win{ background: linear-gradient(90deg, rgba(71,214,140,0.15), rgba(71,214,140,0.06)); transform: translateY(-4px) }
+.stat.lose{ background: linear-gradient(90deg, rgba(255,87,104,0.08), rgba(255,87,104,0.02)); opacity:0.9 }
 
-.card.empty, .card.back{
-  display:flex; align-items:center; justify-content:center; font-weight:600; color:#6b7280; background:linear-gradient(90deg,#f1f5f9,#e2e8f0)
-}
+/* Empty / back */
+.card.empty, .card.back{ display:flex; align-items:center; justify-content:center; font-weight:700; color:#6b7280; background:linear-gradient(90deg,#f1f5f9,#e2e8f0) }
 
-/* Controls */
-.controls{ margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap }
-.stat-buttons{ display:flex; gap:8px; flex-wrap:wrap; flex:1 1 auto }
-.btn{
-  background:var(--accent);
-  border:none;
-  color:white;
-  padding:10px 14px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
-}
-.stat-btn{
-  background:transparent;
-  color:#072033;
-  border:1px solid rgba(0,0,0,0.06);
-  padding:8px 10px;
-  border-radius:6px;
-  cursor:pointer;
-  min-width:120px;
-}
+/* Stat buttons */
+.stat-controls{ margin-top:12px; display:flex; justify-content:center }
+.stat-buttons{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center }
+.stat-btn{ background:transparent; color:#072033; border:1px solid rgba(0,0,0,0.06); padding:10px 12px; border-radius:8px; cursor:pointer; min-width:140px; font-weight:700 }
 
 /* Log */
-.log{ margin-top:12px; max-height:180px; overflow:auto; background:rgba(255,255,255,0.02); padding:8px; border-radius:8px; font-size:13px; color:var(--muted) }
+.log{ margin-top:12px; max-height:220px; overflow:auto; background:rgba(255,255,255,0.02); padding:8px; border-radius:8px; font-size:13px; color:var(--muted) }
 
-.howto{ margin-top:18px; color:var(--muted); font-size:14px }
+.howto{ margin-top:14px; color:var(--muted); font-size:14px }
 
-@media (max-width:760px){
+footer{ margin-top:12px; color:var(--muted); font-size:12px }
+
+/* Responsive */
+@media (max-width:900px){
   .boards{ flex-direction:column }
   .board{ width:100% }
-  .card{ min-height:260px }
-  .card .card-media{ height:140px }
+  .card{ min-height:300px }
+  .card .card-media{ height:150px }
 }
